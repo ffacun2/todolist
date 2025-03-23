@@ -22,5 +22,7 @@ public class UpdateTaskRequest {
 
     private State stateTask;
 
+    private String priority;
+
     private LocalDateTime modifiedDate;
 }

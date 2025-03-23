@@ -27,7 +27,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDTO createTask(CreateTaskRequest createTaskRequest) {
         Task task = taskMapper.toEntity(createTaskRequest);
-
         task.setCreatedDate(LocalDateTime.now());
         task.setModifiedDate(LocalDateTime.now());
 

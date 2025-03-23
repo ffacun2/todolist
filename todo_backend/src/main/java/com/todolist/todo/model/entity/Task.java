@@ -26,14 +26,11 @@ public class Task {
     @Column(length = 10)
     private State taskState;
 
+    @Column(length = 20)
+    private String priority;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
-
-    @PrePersist
-    public void prePersist() {
-        if (taskState == null)
-            taskState = State.PENDING;
-    }
 
 }

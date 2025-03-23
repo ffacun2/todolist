@@ -7,17 +7,19 @@ interface TaskColumnProps {
   title: string
   columnId: string
   children: React.ReactNode
+  onDragStart?: () => void
+  onDragEnd?: () => void
 }
 
-export default function TaskColumn({ title, columnId, children }: TaskColumnProps) {
+export default function TaskColumn({ title, columnId, children, onDragStart, onDragEnd }: Readonly<TaskColumnProps>) {
 
   const getColumnHeaderColor = (id: string) => {
     switch (id) {
-      case "pending":
+      case "PENDING":
         return "text-yellow-600 "
-      case "in-progress":
+      case "IN_PROGRESS":
         return "text-blue-600 "
-      case "completed":
+      case "COMPLETED":
         return "text-green-600"
       default:
         return ""
@@ -33,9 +35,11 @@ export default function TaskColumn({ title, columnId, children }: TaskColumnProp
             ref={provided.innerRef}
             {...provided.droppableProps}
             className={cn(
-              "flex flex-1 flex-col gap-3 overflow-auto min-h-[200px] rounded-md transition-colors",
+              "flex flex-1 flex-col gap-3  min-h-[200px] rounded-md transition-colors",
               snapshot.isDraggingOver && "bg-primary/5",
             )}
+            onDragEnter={onDragStart}
+            onDragLeave={onDragEnd}
           >
             {children}
             {provided.placeholder}

@@ -8,25 +8,31 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus } from "lucide-react"
+import { Plus, Trash2 } from "lucide-react"
+import { Droppable } from "@hello-pangea/dnd"
+import { cn } from "@/lib/utils"
 
 interface BoardProps {
   tasks: Task[]
-  onAddTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => void
+  onAddTask: (task: Omit<Task, "id" | "createdDate" | "modifiedDate">) => void
+  isDragging: boolean
 }
 
-export default function Board({ tasks, onAddTask }: BoardProps) {
-  const [isAddingTask, setIsAddingTask] = useState(false)
+export default function Board({ tasks, onAddTask, isDragging}: Readonly<BoardProps>) {
+  
+  const [isAddingTask, setIsAddingTask] = useState(false);
+
   const [newTask, setNewTask] = useState({
     title: "",
     description: "",
-    priority: "medium",
-    status: "pending",
+    priority: "MEDIUM",
+    taskState: "PENDING",
   })
 
-  const pendingTasks = tasks.filter((task) => task.status === "pending")
-  const inProgressTasks = tasks.filter((task) => task.status === "in-progress")
-  const completedTasks = tasks.filter((task) => task.status === "completed")
+
+  const pendingTasks = tasks.filter((task) => task.taskState === "PENDING")
+  const inProgressTasks = tasks.filter((task) => task.taskState === "IN_PROGRESS")
+  const completedTasks = tasks.filter((task) => task.taskState === "COMPLETED")
 
   const handleAddTask = () => {
     if (newTask.title.trim()) {
@@ -34,17 +40,41 @@ export default function Board({ tasks, onAddTask }: BoardProps) {
       setNewTask({
         title: "",
         description: "",
-        priority: "medium",
-        status: "pending",
+        priority: "MEDIUM",
+        taskState: "PENDING",
       })
       setIsAddingTask(false)
     }
   }
 
+
   return (
-    <div className="h-full w-[80%] justify-self-center">
+    <div className="h-full w-[90%] md:w-[80%] justify-self-center">
       <div className=" mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-primary">Tareas</h2>
+        {/* Delete area - only visible when dragging */}
+          <Droppable droppableId="delete-area">
+            {(provided, snapshot) => (
+              <div className="w-10 h-10">
+                <Button
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={cn(
+                    "transition-all duration-300 cursor-pointer ease-in-out overflow-hidden",
+                    isDragging ? "opacity-100 w-auto" : "opacity-0 w-0 pointer-events-none",
+                    "gap-1 transition-colors",
+                    snapshot.isDraggingOver && "bg-destructive/90 animate-pulse",
+                  )}
+                  variant="destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete Task
+                </Button>
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+
         <Dialog open={isAddingTask} onOpenChange={setIsAddingTask}>
           <DialogTrigger asChild>
             <Button className="gap-1">
@@ -82,22 +112,22 @@ export default function Board({ tasks, onAddTask }: BoardProps) {
                     <SelectValue placeholder="Select priority" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">Low</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="LOW">Low</SelectItem>
+                    <SelectItem value="MEDIUM">Medium</SelectItem>
+                    <SelectItem value="HIGH">High</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="status">Status</Label>
-                <Select value={newTask.status} onValueChange={(value) => setNewTask({ ...newTask, status: value })}>
+                <Select value={newTask.taskState} onValueChange={(value) => setNewTask({ ...newTask, taskState: value })}>
                   <SelectTrigger id="status">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="pending">Pendiente</SelectItem>
-                    <SelectItem value="in-progress">En Progreso</SelectItem>
-                    <SelectItem value="completed">Completado</SelectItem>
+                    <SelectItem value="PENDING">Pendiente</SelectItem>
+                    <SelectItem value="IN_PROGRESS">En Progreso</SelectItem>
+                    <SelectItem value="COMPLETED">Completado</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -107,20 +137,29 @@ export default function Board({ tasks, onAddTask }: BoardProps) {
         </Dialog>
       </div>
 
-      <div className="grid h-[calc(100%-80px)] w-[80%] justify-self-center grid-cols-1 md:grid-cols-3 gap-3">
-        <TaskColumn title="Pending" columnId="pending">
+      <div className="grid h-[calc(100%-80px)] w-full md:w-[95%] justify-self-center grid-cols-1 md:grid-cols-3 gap-3">
+        <TaskColumn 
+          title="Pending" 
+          columnId="PENDING" 
+        >
           {pendingTasks.map((task, index) => (
             <TaskCard key={task.id} task={task} index={index} />
           ))}
         </TaskColumn>
 
-        <TaskColumn title="In Progress" columnId="in-progress">
+        <TaskColumn 
+          title="In Progress" 
+          columnId="IN_PROGRESS"
+        >
           {inProgressTasks.map((task, index) => (
             <TaskCard key={task.id} task={task} index={index} />
           ))}
         </TaskColumn>
 
-        <TaskColumn title="Completed" columnId="completed">
+        <TaskColumn 
+          title="Completed" 
+          columnId="COMPLETED"
+        >
           {completedTasks.map((task, index) => (
             <TaskCard key={task.id} task={task} index={index} />
           ))}

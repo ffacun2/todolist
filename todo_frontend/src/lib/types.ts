@@ -3,9 +3,16 @@ export interface Task {
   title: string
   description: string
   priority: string
-  createdAt: string
-  updatedAt: string
-  status: string
+  createdDate: Date
+  modifiedDate: Date
+  taskState: string
+}
+
+export interface createTaskRequest {
+  title:string,
+  description:string,
+  priority:string,
+  taskState:string
 }
 
 

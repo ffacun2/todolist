@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils"
 import { Draggable } from "@hello-pangea/dnd"
 import type { Task } from "@/lib/types"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { formatDistanceToNow } from "date-fns"
+import {  formatDistanceToNow } from "date-fns"
 import { Badge } from "./ui/badge"
 
 interface TaskCardProps {
@@ -11,16 +11,18 @@ interface TaskCardProps {
   index: number
 }
 
-export default function TaskCard({ task, index }: TaskCardProps) {
-  const priorityColors = {
-    low: "bg-green-100 text-green-800 border-green-200",
-    medium:
-      "bg-yellow-100 text-yellow-800 border-yellow-200",
-    high: "bg-red-100 text-red-800 border-red-200",
-  }
+export default function TaskCard({ task, index }: Readonly<TaskCardProps>) {
 
+  const priorityColors = {
+    LOW: "bg-green-100 text-green-800 border-green-200",
+    MEDIUM:"bg-yellow-100 text-yellow-800 border-yellow-200",
+    HIGH: "bg-red-100 text-red-800 border-red-200",
+  };
+
+
+  console.log(task);
   return (
-    <Draggable draggableId={task.id} index={index}>
+    <Draggable draggableId={task.id.toString()} index={index}>
       {(provided, snapshot) => (
         <Card
           ref={provided.innerRef}
@@ -50,7 +52,7 @@ export default function TaskCard({ task, index }: TaskCardProps) {
               {task.priority}
             </Badge>
             <span className="text-xs text-muted-foreground">
-              {formatDistanceToNow(new Date(task.updatedAt), { addSuffix: true })}
+              {formatDistanceToNow(task.modifiedDate,{addSuffix:true})}
             </span>
           </CardFooter>
         </Card>

@@ -68,7 +68,7 @@ export default function Board({ tasks, onAddTask, isDragging}: Readonly<BoardPro
                   variant="destructive"
                 >
                   <Trash2 className="h-4 w-4" />
-                  Delete Task
+                  Eliminar Tarea
                 </Button>
                 {provided.placeholder}
               </div>
@@ -139,7 +139,7 @@ export default function Board({ tasks, onAddTask, isDragging}: Readonly<BoardPro
 
       <div className="grid h-[calc(100%-80px)] w-full md:w-[95%] justify-self-center grid-cols-1 md:grid-cols-3 gap-3">
         <TaskColumn 
-          title="Pending" 
+          title="Pendiente" 
           columnId="PENDING" 
         >
           {pendingTasks.map((task, index) => (
@@ -148,7 +148,7 @@ export default function Board({ tasks, onAddTask, isDragging}: Readonly<BoardPro
         </TaskColumn>
 
         <TaskColumn 
-          title="In Progress" 
+          title="En Progreso" 
           columnId="IN_PROGRESS"
         >
           {inProgressTasks.map((task, index) => (
@@ -157,7 +157,7 @@ export default function Board({ tasks, onAddTask, isDragging}: Readonly<BoardPro
         </TaskColumn>
 
         <TaskColumn 
-          title="Completed" 
+          title="Completado" 
           columnId="COMPLETED"
         >
           {completedTasks.map((task, index) => (

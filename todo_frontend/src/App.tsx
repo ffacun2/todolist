@@ -7,7 +7,7 @@ import { createTask, deleteTask, getAllTask, updateTaskStatus } from "./api/task
 export default function TodoApp() {
 
   const [tasks, setTasks] = useState<Task[]>([])
-  const [isDragging, setIsDragging] = useState(true)
+  const [isDragging, setIsDragging] = useState(false)
 
   useEffect( () => {
     const fetchTasks = async () => {

@@ -4,6 +4,7 @@ import { Draggable } from "@hello-pangea/dnd"
 import type { Task } from "@/lib/types"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import {  formatDistanceToNow } from "date-fns"
+import { es } from 'date-fns/locale'
 import { Badge } from "./ui/badge"
 
 interface TaskCardProps {
@@ -52,7 +53,7 @@ export default function TaskCard({ task, index }: Readonly<TaskCardProps>) {
               {task.priority}
             </Badge>
             <span className="text-xs text-muted-foreground">
-              {formatDistanceToNow(task.modifiedDate,{addSuffix:true})}
+              {formatDistanceToNow(task.modifiedDate,{addSuffix:true, locale:es})}
             </span>
           </CardFooter>
         </Card>

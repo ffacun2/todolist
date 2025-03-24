@@ -1,9 +1,9 @@
 package com.todolist.todo.model.entity;
 
+import com.todolist.todo.utils.Priority;
 import com.todolist.todo.utils.State;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +27,11 @@ public class Task {
     private State taskState;
 
     @Column(length = 20)
-    private String priority;
+    private Priority priority;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "workspace_id")
+    private WorkSpace workspace;
 
     private LocalDateTime createdDate;
 

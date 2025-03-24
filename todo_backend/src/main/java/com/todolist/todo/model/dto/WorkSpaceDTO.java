@@ -1,9 +1,11 @@
 package com.todolist.todo.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.todolist.todo.utils.Priority;
-import com.todolist.todo.utils.State;
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -11,14 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaskDTO {
+public class WorkSpaceDTO {
     private Long id;
-    private String title;
-    private String description;
-    private Priority priority;
-    private State taskState;
-
-    private Long workspaceId;
+    private String name;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;

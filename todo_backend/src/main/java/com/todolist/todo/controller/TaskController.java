@@ -29,7 +29,7 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getAllTasks() {
         List<TaskDTO> list = taskService.getAllTasks();
-        System.out.println(list.getFirst().getCreatedDate());
+
         return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
     }
 

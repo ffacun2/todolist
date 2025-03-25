@@ -7,10 +7,10 @@ import com.todolist.todo.model.dto.UpdateTaskRequest;
 import com.todolist.todo.model.entity.Task;
 import com.todolist.todo.model.mapper.TaskMapper;
 import com.todolist.todo.repositories.TaskRepository;
+import com.todolist.todo.repositories.WorkSpaceRepository;
 import com.todolist.todo.services.TaskService;
 import com.todolist.todo.utils.State;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +21,7 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+    private final WorkSpaceRepository workSpaceRepository;
     private final TaskMapper taskMapper;
 
 

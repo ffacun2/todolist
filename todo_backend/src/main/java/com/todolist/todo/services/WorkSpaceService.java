@@ -2,6 +2,7 @@ package com.todolist.todo.services;
 
 
 import com.todolist.todo.model.dto.CreateWorkSpaceRequest;
+import com.todolist.todo.model.dto.UpdateWorkSpaceRequest;
 import com.todolist.todo.model.dto.WorkSpaceDTO;
 import jakarta.validation.Valid;
 
@@ -12,7 +13,7 @@ public interface WorkSpaceService {
 
     List<WorkSpaceDTO> getAllWorkspaces();
 
-    WorkSpaceDTO updateWorkSpace(Long id, @Valid CreateWorkSpaceRequest updateWorkSpaceRequest);
+    WorkSpaceDTO updateWorkSpace(Long id, @Valid UpdateWorkSpaceRequest updateWorkSpaceRequest);
 
     void deleteWorkSpace(Long id);
 }

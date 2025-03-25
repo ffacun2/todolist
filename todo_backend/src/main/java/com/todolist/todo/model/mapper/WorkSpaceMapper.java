@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface WorkSpaceMapper {
 
-    WorkSpaceDTO toDto(WorkSpace workspace);
+    WorkSpaceDTO toDTO(WorkSpace workspace);
 
     List<WorkSpaceDTO> toDtoList(List<WorkSpace> workspaces);
 

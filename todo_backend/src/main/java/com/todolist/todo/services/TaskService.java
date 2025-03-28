@@ -18,5 +18,7 @@ public interface TaskService {
 
     void deleteTask(Long id);
 
+    List<TaskDTO> getTasksByWorkspaceId(Long workSpaceID);
+
     List<TaskDTO> getAllTasks();
 }

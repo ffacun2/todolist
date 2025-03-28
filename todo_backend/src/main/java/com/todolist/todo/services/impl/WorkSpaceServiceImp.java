@@ -11,6 +11,7 @@ import com.todolist.todo.services.WorkSpaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,6 +24,8 @@ public class WorkSpaceServiceImp implements WorkSpaceService {
     @Override
     public WorkSpaceDTO createWorkSpace(CreateWorkSpaceRequest createWorkSpaceRequest) {
         WorkSpace workspace = workSpaceMapper.toEntity(createWorkSpaceRequest);
+        workspace.setCreatedDate(LocalDateTime.now());
+        workspace.setModifiedDate(LocalDateTime.now());
         WorkSpace savedWorkSpace = workSpaceRepository.save(workspace);
 
         return workSpaceMapper.toDTO(savedWorkSpace);
@@ -40,6 +43,7 @@ public class WorkSpaceServiceImp implements WorkSpaceService {
                         .orElseThrow(() -> new ResourceNotFoundException("WorkSpace not found"));
         workSpaceMapper.updateWorkspaceFromDto(updateWorkSpaceRequest,workspace);
 
+        workspace.setModifiedDate(LocalDateTime.now());
         WorkSpace savedWorkSpace = workSpaceRepository.save(workspace);
         return workSpaceMapper.toDTO(savedWorkSpace);
     }

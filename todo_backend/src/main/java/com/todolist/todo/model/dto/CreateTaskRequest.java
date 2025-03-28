@@ -1,6 +1,5 @@
 package com.todolist.todo.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.todolist.todo.utils.State;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,5 +26,7 @@ public class CreateTaskRequest {
     private String priority;
 
     private State taskState;
+
+    private Long workSpaceID;
 
 }

@@ -1,6 +1,7 @@
 package com.todolist.todo.controller;
 
 import com.todolist.todo.model.dto.CreateWorkSpaceRequest;
+import com.todolist.todo.model.dto.UpdateWorkSpaceRequest;
 import com.todolist.todo.model.dto.WorkSpaceDTO;
 import com.todolist.todo.services.WorkSpaceService;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/workspaces")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class WorkSpaceController {
 
     private final WorkSpaceService workSpaceService;
@@ -33,7 +35,7 @@ public class WorkSpaceController {
     @PutMapping("/{id}")
     public ResponseEntity<WorkSpaceDTO> updateWorkSpace (
             @PathVariable Long id,
-            @Valid @RequestBody CreateWorkSpaceRequest updateWorkSpaceRequest) {
+            @Valid @RequestBody UpdateWorkSpaceRequest updateWorkSpaceRequest) {
         return new ResponseEntity<>(workSpaceService.updateWorkSpace(id, updateWorkSpaceRequest), HttpStatus.OK);
     }
 

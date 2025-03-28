@@ -18,7 +18,7 @@ public class TaskDTO {
     private Priority priority;
     private State taskState;
 
-    private Long workspaceId;
+    private Long workSpaceID;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;

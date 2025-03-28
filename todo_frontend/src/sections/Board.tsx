@@ -13,12 +13,13 @@ import { Droppable } from "@hello-pangea/dnd"
 import { cn } from "@/lib/utils"
 
 interface BoardProps {
+  space: string
   tasks: Task[]
   onAddTask: (task: Omit<Task, "id" | "createdDate" | "modifiedDate">) => void
   isDragging: boolean
 }
 
-export default function Board({ tasks, onAddTask, isDragging}: Readonly<BoardProps>) {
+export default function Board({space, tasks, onAddTask, isDragging}: Readonly<BoardProps>) {
   
   const [isAddingTask, setIsAddingTask] = useState(false);
 
@@ -27,6 +28,7 @@ export default function Board({ tasks, onAddTask, isDragging}: Readonly<BoardPro
     description: "",
     priority: "MEDIUM",
     taskState: "PENDING",
+    workSpaceID: space
   })
 
 
@@ -42,6 +44,7 @@ export default function Board({ tasks, onAddTask, isDragging}: Readonly<BoardPro
         description: "",
         priority: "MEDIUM",
         taskState: "PENDING",
+        workSpaceID: space
       })
       setIsAddingTask(false)
     }
@@ -49,7 +52,7 @@ export default function Board({ tasks, onAddTask, isDragging}: Readonly<BoardPro
 
 
   return (
-    <div className="h-full w-[90%] md:w-[80%] justify-self-center">
+    <div className="h-full w-[90%] md:w-[95%] justify-self-center">
       <div className=" mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-primary">Tareas</h2>
         {/* Delete area - only visible when dragging */}

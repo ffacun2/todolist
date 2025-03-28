@@ -5,6 +5,7 @@ import com.todolist.todo.model.dto.CreateTaskRequest;
 import com.todolist.todo.model.dto.TaskDTO;
 import com.todolist.todo.model.dto.UpdateTaskRequest;
 import com.todolist.todo.model.entity.Task;
+import com.todolist.todo.model.entity.WorkSpace;
 import com.todolist.todo.model.mapper.TaskMapper;
 import com.todolist.todo.repositories.TaskRepository;
 import com.todolist.todo.repositories.WorkSpaceRepository;
@@ -27,9 +28,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDTO createTask(CreateTaskRequest createTaskRequest) {
+
+        WorkSpace workSpace = workSpaceRepository.findById(createTaskRequest.getWorkSpaceID())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro el espacio de trabajo"));
+
         Task task = taskMapper.toEntity(createTaskRequest);
         task.setCreatedDate(LocalDateTime.now());
         task.setModifiedDate(LocalDateTime.now());
+        task.setWorkspace(workSpace);
 
         Task saveTask = taskRepository.save(task);
 
@@ -68,6 +74,13 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         taskRepository.delete(existingTask);
+    }
+
+    public List<TaskDTO> getTasksByWorkspaceId (Long workSpaceID) {
+        if (!workSpaceRepository.existsById(workSpaceID)) {
+            throw new ResourceNotFoundException("No se encontro el espacio de trabajo "+workSpaceID);
+        }
+        return taskMapper.toDTOList(taskRepository.getTasksByWorkspaceId(workSpaceID));
     }
 
     @Override

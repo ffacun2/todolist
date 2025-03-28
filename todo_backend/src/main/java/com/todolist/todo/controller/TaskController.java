@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/tasks")
+@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173")
 public class TaskController {
 
@@ -26,10 +26,14 @@ public class TaskController {
         return new ResponseEntity<>(taskService.createTask(createTaskRequest), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<List<TaskDTO>> getTasksByWorkSpace (@PathVariable Long id) {
+        return new ResponseEntity<>(taskService.getTasksByWorkspaceId(id), HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getAllTasks() {
         List<TaskDTO> list = taskService.getAllTasks();
-        System.out.println(list.getFirst().getCreatedDate());
         return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
     }
 
@@ -55,3 +59,4 @@ public class TaskController {
     }
 
 }
+

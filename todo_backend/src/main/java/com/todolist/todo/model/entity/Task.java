@@ -26,6 +26,7 @@ public class Task {
     @Column(length = 10)
     private State taskState;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private Priority priority;
 

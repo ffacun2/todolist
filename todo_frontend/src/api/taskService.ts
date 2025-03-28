@@ -1,9 +1,15 @@
 import api from "./apiTaskConfig"
-import {createTaskRequest, Task} from "../lib/types"
+import {createTaskRequest, Task, WorkSpace} from "../lib/types"
 
 export const getAllTask = async (): Promise<Task[]> => {
     const response = await api.get<Task[]>("");
 
+    return response.data;
+};
+
+export const getTasksByWorkSpace = async(workSpace:WorkSpace):Promise<Task[]> => {
+    const response = await api.get<Task[]>(`${workSpace.id}`)
+    
     return response.data;
 };
 

@@ -15,8 +15,16 @@ public interface WorkSpaceMapper {
 
     List<WorkSpaceDTO> toDtoList(List<WorkSpace> workspaces);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "tasks", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "modifiedDate", ignore = true)
     WorkSpace toEntity(CreateWorkSpaceRequest createWorkspaceRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "tasks", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "modifiedDate", ignore = true)
     void updateWorkspaceFromDto(UpdateWorkSpaceRequest updateWorkspaceRequest, @MappingTarget WorkSpace workspace);
 }

@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface TaskMapper {
 
+    @Mapping(target="workSpaceID", source = "workspace.id")
     TaskDTO toDTO(Task task);
 
     List<TaskDTO> toDTOList(List<Task> tasks);

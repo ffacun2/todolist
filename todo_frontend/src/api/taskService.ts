@@ -18,6 +18,11 @@ export const createTask = async (taskData: createTaskRequest):Promise<Task> => {
     return response.data;
 };
 
+export const updateTask = async (taskId:string, dataTask:createTaskRequest):Promise<Task> => {
+    const response = await api.put<Task>(`/${taskId}`, dataTask);
+    return response.data;
+}
+
 export const updateTaskStatus = async (taskId:string, taskState:string):Promise<Task> => {
     const response = await api.patch<Task>(`/${taskId}/status?state=${taskState}`);
     return response.data;

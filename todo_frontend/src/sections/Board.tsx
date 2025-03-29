@@ -3,53 +3,35 @@ import type { Task } from "@/lib/types"
 import TaskCard from "@/components/TaskCard"
 import TaskColumn from "@/components/TaskColumn"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Plus, Trash2 } from "lucide-react"
 import { Droppable } from "@hello-pangea/dnd"
 import { cn } from "@/lib/utils"
+import TaskFormDialog from "@/components/DialogTask"
+
 
 interface BoardProps {
   space: string
   tasks: Task[]
   onAddTask: (task: Omit<Task, "id" | "createdDate" | "modifiedDate">) => void
+  onEditTask: (task: Omit<Task,"createdDate" | "modifiedDate">) => void
   isDragging: boolean
 }
 
-export default function Board({space, tasks, onAddTask, isDragging}: Readonly<BoardProps>) {
+export default function Board({
+  space,
+  tasks,
+  onAddTask,
+  onEditTask,
+  isDragging,
+}: Readonly<BoardProps>) {
   
   const [isAddingTask, setIsAddingTask] = useState(false);
 
-  const [newTask, setNewTask] = useState({
-    title: "",
-    description: "",
-    priority: "MEDIUM",
-    taskState: "PENDING",
-    workSpaceID: space
-  })
 
 
   const pendingTasks = tasks.filter((task) => task.taskState === "PENDING")
   const inProgressTasks = tasks.filter((task) => task.taskState === "IN_PROGRESS")
   const completedTasks = tasks.filter((task) => task.taskState === "COMPLETED")
-
-  const handleAddTask = () => {
-    if (newTask.title.trim()) {
-      onAddTask(newTask)
-      setNewTask({
-        title: "",
-        description: "",
-        priority: "MEDIUM",
-        taskState: "PENDING",
-        workSpaceID: space
-      })
-      setIsAddingTask(false)
-    }
-  }
-
 
   return (
     <div className="h-full w-[90%] md:w-[95%] justify-self-center">
@@ -78,66 +60,20 @@ export default function Board({space, tasks, onAddTask, isDragging}: Readonly<Bo
             )}
           </Droppable>
 
-        <Dialog open={isAddingTask} onOpenChange={setIsAddingTask}>
-          <DialogTrigger asChild>
-            <Button className="gap-1">
-              <Plus className="h-4 w-4" />
-              Agregar Tarea
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Agregar Nueva Tarea</DialogTitle>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="title">Titulo</Label>
-                <Input
-                  id="title"
-                  value={newTask.title}
-                  onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                  placeholder="Task title"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={newTask.description}
-                  onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-                  placeholder="Task description"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="priority">Priority</Label>
-                <Select value={newTask.priority} onValueChange={(value) => setNewTask({ ...newTask, priority: value })}>
-                  <SelectTrigger id="priority">
-                    <SelectValue placeholder="Select priority" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="LOW">Low</SelectItem>
-                    <SelectItem value="MEDIUM">Medium</SelectItem>
-                    <SelectItem value="HIGH">High</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="status">Status</Label>
-                <Select value={newTask.taskState} onValueChange={(value) => setNewTask({ ...newTask, taskState: value })}>
-                  <SelectTrigger id="status">
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="PENDING">Pendiente</SelectItem>
-                    <SelectItem value="IN_PROGRESS">En Progreso</SelectItem>
-                    <SelectItem value="COMPLETED">Completado</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <Button onClick={handleAddTask}>Agregar Tarea</Button>
-          </DialogContent>
-        </Dialog>
+          
+          <Button className="gap-1" onClick={() => setIsAddingTask(true)}>
+            <Plus className="h-4 w-4" />
+            Add Task
+          </Button>
+
+          <TaskFormDialog
+            open={isAddingTask}
+            onOpenChange={setIsAddingTask}
+            onSubmit={onAddTask}
+            workSectionId={space}
+            title="Agregar Nueva Tarea"
+            mode="create"
+          />
       </div>
 
       <div className="grid h-[calc(100%-80px)] w-full md:w-[95%] justify-self-center grid-cols-1 md:grid-cols-3 gap-3">
@@ -146,7 +82,7 @@ export default function Board({space, tasks, onAddTask, isDragging}: Readonly<Bo
           columnId="PENDING" 
         >
           {pendingTasks.map((task, index) => (
-            <TaskCard key={task.id} task={task} index={index} />
+            <TaskCard key={task.id} task={task} index={index} onEditTask={onEditTask} />
           ))}
         </TaskColumn>
 
@@ -155,7 +91,7 @@ export default function Board({space, tasks, onAddTask, isDragging}: Readonly<Bo
           columnId="IN_PROGRESS"
         >
           {inProgressTasks.map((task, index) => (
-            <TaskCard key={task.id} task={task} index={index} />
+            <TaskCard key={task.id} task={task} index={index} onEditTask={onEditTask} />
           ))}
         </TaskColumn>
 
@@ -164,7 +100,7 @@ export default function Board({space, tasks, onAddTask, isDragging}: Readonly<Bo
           columnId="COMPLETED"
         >
           {completedTasks.map((task, index) => (
-            <TaskCard key={task.id} task={task} index={index} />
+            <TaskCard key={task.id} task={task} index={index} onEditTask={onEditTask} />
           ))}
         </TaskColumn>
       </div>

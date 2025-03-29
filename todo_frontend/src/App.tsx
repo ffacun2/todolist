@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd"
 import Board from "@/sections/Board"
 import { createSpaceRequest, createTaskRequest, Task, WorkSpace } from "./lib/types"
-import { createTask, deleteTask, getTasksByWorkSpace, updateTaskStatus } from "./api/taskService"
+import { createTask, deleteTask, getTasksByWorkSpace, updateTask, updateTaskStatus } from "./api/taskService"
 import SideBar from "./components/SideBar"
 import Header from "./components/Header"
-import { createWorkSpace, getAllWorkSpace } from "./api/workSpaceService"
+import { createWorkSpace, deleteWorkSpace, getAllWorkSpace, updateWorkSpace } from "./api/workSpaceService"
 
 
 export default function TodoApp() {
@@ -21,7 +21,6 @@ export default function TodoApp() {
       try {
         const data = await getAllWorkSpace();
         setWorkSpaces(data);
-        console.log(data);
       }
       catch (error) {
         console.error("Error al obtener los espacios de trabajo. ",error)
@@ -86,6 +85,23 @@ export default function TodoApp() {
     }
   }
 
+  const handleUpdateTask = async (task:  Omit<Task, "createdDate" | "modifiedDate"> ) => {
+    const dataTask: createTaskRequest = {
+      title: task.title,
+      description: task.description,
+      priority: task.priority,
+      taskState: task.taskState,
+      workSpaceID: task.workSpaceID,
+    }
+    try{
+      const data = await updateTask(task.id,dataTask);
+      setTasks((prevTasks) => prevTasks.map((task) => task.id === data.id ? data : task));
+    }
+    catch (error) {
+      console.error("Error al intentar actualizar la tarea: ",error)
+    }
+  }
+
   const handleDeleteTask = async(taskId:string) => {
     try {
       await deleteTask(taskId);
@@ -119,6 +135,29 @@ export default function TodoApp() {
 
   }
 
+  const handleUpdateWorkSpace = async(id:string, name:string) => {
+    try {
+      const data = await updateWorkSpace(id,{name})
+      setWorkSpaces((prevWorkSpaces) => prevWorkSpaces.map((space) => space.id === data.id ? data : space))
+    }
+    catch (error) {
+      console.error("Error al intentar actualizar el espacio de trabajo, ",error)
+    }
+  }
+
+  const handleDeleteWorkSpace = async(id:string) => {
+    try {
+      await deleteWorkSpace(id);
+      setWorkSpaces((prevWorkSpaces) => prevWorkSpaces.filter((space) => space.id !== id))
+      if (selectedSpace?.id === id) {
+        setSelectedSpace(null)
+        setTasks([])
+      }
+    }
+    catch (error) {
+      console.error("Error al intentar eliminar el espacio de trabajo, ",error)
+    }
+  }
 
 
   return (
@@ -130,6 +169,8 @@ export default function TodoApp() {
               workSpaces={workSpaces}
               onSelectSpace={handleSelectSpace}
               onAddWorkSpace={handleAddWorkSpace}
+              onEditWorkSpace={handleUpdateWorkSpace}
+              onDeleteWorkSpace={handleDeleteWorkSpace}
               selectedSpace={selectedSpace}
             />
             <main className="flex-1 overflow-auto p-4">
@@ -139,6 +180,7 @@ export default function TodoApp() {
                   space={selectedSpace.id}
                   tasks={tasks}
                   onAddTask={handleAddTask}
+                  onEditTask={handleUpdateTask}
                   isDragging={isDragging}
                   />
                 : (

@@ -11,3 +11,13 @@ export const createWorkSpace = async (spaceData:createSpaceRequest):Promise<Work
     const response = await api.post<WorkSpace>("",spaceData);
     return response.data;
 }
+
+export const updateWorkSpace = async (spaceId:string, spaceData:createSpaceRequest):Promise<WorkSpace> => {
+    console.log(spaceId, spaceData)
+    const response = await api.put<WorkSpace>(`/${spaceId}`,spaceData);
+    return response.data;
+}
+
+export const deleteWorkSpace = async (spaceId:string):Promise<void> => {
+    await api.delete<void>(`/${spaceId}`);
+}

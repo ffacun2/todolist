@@ -6,6 +6,7 @@ export interface Task {
   createdDate: Date
   modifiedDate: Date
   taskState: string
+  workSpaceID:string
 }
 
 export interface createTaskRequest {
@@ -13,6 +14,15 @@ export interface createTaskRequest {
   description:string,
   priority:string,
   taskState:string
+  workSpaceID:string
 }
 
+export interface WorkSpace {
+  id: string,
+  name: string,
+}
+
+export interface createSpaceRequest {
+  name: string,
+}
 

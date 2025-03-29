@@ -21,7 +21,6 @@ export default function TaskCard({ task, index }: Readonly<TaskCardProps>) {
   };
 
 
-  console.log(task);
   return (
     <Draggable draggableId={task.id.toString()} index={index}>
       {(provided, snapshot) => (

@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+const URL = process.env.URL_API
+
 const api = axios.create( {
-    baseURL:"http://localhost:8080/tasks",
+    baseURL:`${URL}/tasks`,
     headers: {
         "Content-Type": "application/json",
     }

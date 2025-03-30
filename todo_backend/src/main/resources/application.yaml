@@ -3,13 +3,15 @@ server:
 
 spring:
   application:
-    name: ${APPLICATION_NAME:Backend TodoList}
+    name: ${APPLICATION_NAME:Backend TodoList}  # Si no hay APPLICATION_NAME, usará "Backend TodoList"
+
   datasource:
-    url: ${MYSQL_PUBLIC_URL}
-    username: ${MYSQLUSER}
-    password: ${MYSQL_ROOT_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://root:sgZCQcgBrFYJxylusSlKDOFkvueBdFqY@shinkansen.proxy.rlwy.net:23533/railway # La URL de la base de datos
+    username: ${MYSQLUSER}  # Nombre de usuario para la base de datos
+    password: ${MYSQL_ROOT_PASSWORD}  # Contraseña de la base de datos
+    driver-class-name: com.mysql.cj.jdbc.Driver  # Controlador para MySQL
+
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect  # Dialecto para MySQL 8
     hibernate:
-      ddl-auto: update
+      ddl-auto: update  # Actualización automática del esquema (útil en desarrollo)

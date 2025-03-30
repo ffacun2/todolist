@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/workspaces")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
 public class WorkSpaceController {
 
     private final WorkSpaceService workSpaceService;

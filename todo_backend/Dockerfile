@@ -1,5 +1,5 @@
 FROM amazoncorretto:23-alpine-jdk
 
-COPY out/artifacts/todo_jar/todo.jar todo.jar
+COPY todobackend/out/artifacts/todo_jar/todo.jar app.jar
 
-ENTRYPOINT ["java", "-jar", "todo.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
